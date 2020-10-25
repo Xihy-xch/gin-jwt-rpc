@@ -10,35 +10,37 @@ import (
 
 var secret = "secret"
 
+
+var jwtInfo *jwt.Jwt
+
 func main() {
+	jwtInfo = jwt.NewJwt()
+	jwtInfo.SetSecret(secret)
 	route := gin.Default()
-
 	route.POST("/login", func(c *gin.Context) {
-		jwtCookie, err := c.Cookie("jwtCookie")
-
-		if err != nil {
-			jwtCookie = "NotSet"
-			c.SetCookie("gin_cookie", "test", 3600, "/", "localhost", false, true)
-		}
-		fmt.Printf("Cookie value: %s \n", jwtCookie)
-		// c.String(http.StatusOK, "Hello vister!")
+		jwtCookie, _ := c.Cookie("jwtCookie")
 		username := c.PostForm("username")
-		password := c.PostForm("password")
-		if username == "admin" && password == "admin" {
-			jwtInfo := jwt.NewJwt()
-			jwtInfo.SetHeader("HS256")
-			jwtInfo.SetPayload(username)
-			header := jwtInfo.GetHeaderToBase64()
-			payload := jwtInfo.GetPayloadToBase64()
-			jwtInfo.SetSecret(secret)
-			signature := jwtInfo.ComputeHmacSha256(header + "." + payload)
-			token := header + "." + payload + "." + signature
-
+		if len(jwtCookie) > 0 && jwtInfo.CheckToken(jwtCookie) {
+			token := jwtInfo.GetSecrectToken(username)
 			c.JSON(http.StatusOK, gin.H{
 				"token": token,
 			})
+			fmt.Println("token success!",token)
+		} else {
+			password := c.PostForm("password")
+			if username == "admin" && password == "admin" {
+				
+				token := jwtInfo.GetSecrectToken(username)
+				fmt.Println("username and password is correct!", token)
+				c.JSON(http.StatusOK, gin.H{
+					"token": token,
+				})
 
-		}
+			} else {
+				c.String(http.StatusForbidden, "username or password is wrong!")
+			}
+		} 
+		// c.String(http.StatusOK, "Hello vister!")
 
 	})
 

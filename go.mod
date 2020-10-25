@@ -1,4 +1,4 @@
-module gin-jwt-rpc
+module gin-jw-rpc
 
 go 1.15
 
@@ -11,3 +11,5 @@ require (
 replace jwt => ./jwt
 
 replace base64 => ./base64
+
+replace cookie => ./cookie

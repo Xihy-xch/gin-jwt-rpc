@@ -1,14 +1,23 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 	"strings"
+	"time"
 )
 
+var cookie string
+
 func main() {
-	httpDo()
+	for i := 0; i < 2; i++ {
+		fmt.Println(cookie)
+		httpDo()
+		time.Sleep(time.Duration(2) * time.Second)
+	}
+
 }
 
 func httpDo() {
@@ -20,7 +29,8 @@ func httpDo() {
 	}
 
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
-	req.Header.Set("Cookie", "jwtCookie=Snd0VHlwZTpKd3QsQWxnb3JpdGhtOkhTMjU2LA==.VXNlcm5hbWU6YWRtaW4s.f8e1c8b25bcf72aad7d7dc8d4011cebfd84f2b764501eaea10285368c38c033b")
+	cookie1 := &http.Cookie{Name: "jwtCookie", Value: cookie, HttpOnly: true}
+	req.AddCookie(cookie1)
 
 	resp, err := client.Do(req)
 
@@ -30,6 +40,7 @@ func httpDo() {
 	if err != nil {
 		// handle error
 	}
-
-	fmt.Println(string(body))
+	var tmp map[string]interface{}
+	json.Unmarshal(body, &tmp)
+	cookie = tmp["token"].(string)
 }
