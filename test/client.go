@@ -23,7 +23,7 @@ func main() {
 func httpDo() {
 	client := &http.Client{}
 
-	req, err := http.NewRequest("POST", "http://127.0.0.1:8080/login", strings.NewReader("username=admin&password=admin"))
+	req, err := http.NewRequest("POST", "http://127.0.0.1:8080/login", strings.NewReader("username=admin&password=root"))
 	if err != nil {
 		// handle error
 	}
@@ -38,9 +38,9 @@ func httpDo() {
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		// handle error
+		return
 	}
 	var tmp map[string]interface{}
 	json.Unmarshal(body, &tmp)
-	cookie = tmp["token"].(string)
+	fmt.Println(tmp)
 }

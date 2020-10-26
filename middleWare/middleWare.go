@@ -2,8 +2,9 @@ package middleWare
 
 import (
 	"fmt"
-	"jwt"
 	"net/http"
+
+	"jwt"
 	"sql"
 	"github.com/gin-gonic/gin"
 )
@@ -25,9 +26,10 @@ func HandlerJwt(c *gin.Context) {
 		fmt.Println("token success!", token)
 		c.Next()
 	} else {
-		password := c.PostForm("password")
-		if username == "admin" && password == "admin" {
 
+		password := c.PostForm("password")
+
+		if sql.CheckAccount(username, password) {
 			token := jwtInfo.GetSecrectToken(username)
 			fmt.Println("username and password is correct!", token)
 			c.JSON(http.StatusOK, gin.H{

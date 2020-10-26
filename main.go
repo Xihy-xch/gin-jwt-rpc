@@ -4,6 +4,7 @@ import (
 	"jwt"
 	middle "middleWare"
 	"github.com/gin-gonic/gin"
+	"sql"
 )
 
 var secret = "secret"
@@ -11,6 +12,8 @@ var secret = "secret"
 var jwtInfo *jwt.Jwt
 
 func main() {
+	db := sql.Connection("root", "root", "gin_jwt_rpc")
+	defer db.Close()
 	jwtInfo = jwt.NewJwt()
 	jwtInfo.SetSecret(secret)
 	route := gin.Default()

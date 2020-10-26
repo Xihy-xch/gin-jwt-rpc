@@ -15,7 +15,6 @@ func Connection(username string, password string, dbName string) *gorm.DB {
 		fmt.Println("connect failed")
 	}
 	db = newDb
-	defer db.Close()
 	return db
 }
 
@@ -23,3 +22,5 @@ func CheckAccount(username string, password string) bool {
 	var user models.User
 	return !(db.Where("user_name = ? AND password = ?", username, password).Find(&user).RecordNotFound())
 }
+
+
