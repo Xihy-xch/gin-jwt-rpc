@@ -1,16 +1,14 @@
 package jwt
 
 import (
-	"base64"
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/hex"
-
-	//"fmt"
 	"reflect"
 	"strconv"
 	"strings"
 	"time"
+	"workspace/gin-jwt-rpc/base64"
 )
 
 type Header struct {

@@ -2,11 +2,10 @@ package middleWare
 
 import (
 	"fmt"
-	"net/http"
-
-	"jwt"
-	"sql"
 	"github.com/gin-gonic/gin"
+	"net/http"
+	"workspace/gin-jwt-rpc/jwt"
+	"workspace/gin-jwt-rpc/sql"
 )
 
 func HandlerJwt(c *gin.Context) {

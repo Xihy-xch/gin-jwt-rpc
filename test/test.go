@@ -2,9 +2,7 @@ package main
 
 import (
 	"fmt"
-	"sql"
-
-	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"workspace/gin-jwt-rpc/sql"
 )
 
 func main() {

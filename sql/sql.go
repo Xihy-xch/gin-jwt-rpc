@@ -2,9 +2,8 @@ package sql
 
 import (
 	"fmt"
-	"models"
 	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"workspace/gin-jwt-rpc/models"
 )
 
 var db *gorm.DB
@@ -22,5 +21,3 @@ func CheckAccount(username string, password string) bool {
 	var user models.User
 	return !(db.Where("user_name = ? AND password = ?", username, password).Find(&user).RecordNotFound())
 }
-
-

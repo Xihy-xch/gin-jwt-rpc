@@ -1,10 +1,10 @@
 package main
 
 import (
-	"jwt"
-	middle "middleWare"
 	"github.com/gin-gonic/gin"
-	"sql"
+	"workspace/gin-jwt-rpc/jwt"
+	"workspace/gin-jwt-rpc/middleWare"
+	"workspace/gin-jwt-rpc/sql"
 )
 
 var secret = "secret"
@@ -17,7 +17,7 @@ func main() {
 	jwtInfo = jwt.NewJwt()
 	jwtInfo.SetSecret(secret)
 	route := gin.Default()
-	route.POST("/login", setJwtInfo, middle.HandlerJwt)
+	route.POST("/login", setJwtInfo, middleWare.HandlerJwt)
 
 	route.Run(":8080")
 }
